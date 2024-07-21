@@ -39,7 +39,6 @@ resource "aws_eks_cluster" "eks_cluster" {
     endpoint_public_access  = true
   }
 
-  # Kubernetes version
   version = "1.30"
 
   tags = {

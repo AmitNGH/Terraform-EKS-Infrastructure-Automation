@@ -1,5 +1,4 @@
 # VPC Setup
-
 resource "aws_vpc" "counter_vpc" {
   cidr_block       = var.vpc_cidr_block
   enable_dns_support = true
@@ -11,7 +10,7 @@ resource "aws_vpc" "counter_vpc" {
   }
 }
 
-# Create the private subnets
+# Create private subnets
 resource "aws_subnet" "private_subnet" {
   count = 2
   vpc_id = aws_vpc.counter_vpc.id
@@ -25,7 +24,7 @@ resource "aws_subnet" "private_subnet" {
   }
 }
 
-# Create the public subnets
+# Create public subnets
 resource "aws_subnet" "public_subnet" {
   count = 2
   vpc_id            = "${aws_vpc.counter_vpc.id}"
@@ -37,13 +36,11 @@ resource "aws_subnet" "public_subnet" {
     "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
     "kubernetes.io/role/elb" = 1
   }
-
-  # map_public_ip_on_launch = true
 }
 
 # Create Internet Gateway
 resource "aws_internet_gateway" "counter_gateway" {
-  vpc_id = "${aws_vpc.counter_vpc.id}"
+  vpc_id = aws_vpc.counter_vpc.id
 
   tags = {
     Name = var.internet_gateway_name
@@ -101,26 +98,6 @@ resource "aws_route" "nat_route_table" {
 resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.counter_vpc.id
 }
-
-# ## Security groups
-# resource "aws_security_group" "counter_public_sg" {
-#   name   = "counter-public-subnet-sg"
-#   vpc_id = aws_vpc.counter_vpc.id
-
-#   tags = {
-#     Name = "counter-public-subnet-sg"
-#   }
-# }
-
-# # Allow port 80
-# resource "aws_security_group_rule" "counter_sg_public_80" {
-#   security_group_id = aws_security_group.counter_public_sg.id
-#   type              = "ingress"
-#   from_port         = 80
-#   to_port           = 80
-#   protocol          = "tcp"
-#   cidr_blocks = [var.vpc_cidr_block]
-# }
 
 resource "aws_security_group" "eks_nodes" {
   name   = "k8s-counter-sg"
