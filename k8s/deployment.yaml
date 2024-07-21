@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amit-counter-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: amit-counter
+  template:
+    metadata:
+      labels:
+        app: amit-counter
+    spec:
+      containers:
+      - name: amit-counter
+        image: amitnd/counter-service:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: "terraform-20240721113729952500000008.cix0rcke5i5t.eu-north-1.rds.amazonaws.com"
+        - name: DB_USER
+          value: "amit"
+        - name: DB_PASSWORD
+          value: "password"
+        - name: DB_NAME
+          value: "counterdb"
