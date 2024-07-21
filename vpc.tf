@@ -122,7 +122,7 @@ resource "aws_default_security_group" "default" {
 #   cidr_blocks = [var.vpc_cidr_block]
 # }
 
-resource "aws_security_group" "counter_worker_sg" {
+resource "aws_security_group" "eks_nodes" {
   name   = "k8s-counter-sg"
   vpc_id = aws_vpc.counter_vpc.id
 
@@ -132,7 +132,7 @@ resource "aws_security_group" "counter_worker_sg" {
 }
 
 resource "aws_security_group_rule" "counter_sg_worker_80" {
-  security_group_id = aws_security_group.counter_worker_sg.id
+  security_group_id = aws_security_group.eks_nodes.id
   type              = "ingress"
   from_port         = 80
   to_port           = 80
@@ -145,8 +145,8 @@ resource "aws_security_group_rule" "eks_worker_ingress_443" {
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  security_group_id = aws_security_group.counter_worker_sg.id
-  source_security_group_id = aws_security_group.eks_cluster_management_sg.id
+  security_group_id = aws_security_group.eks_nodes.id
+  source_security_group_id = aws_security_group.eks_cluster.id
 }
 
 resource "aws_security_group_rule" "eks_worker_ingress_10250" {
@@ -154,10 +154,10 @@ resource "aws_security_group_rule" "eks_worker_ingress_10250" {
   from_port         = 10250
   to_port           = 10250
   protocol          = "tcp"
-  security_group_id = aws_security_group.counter_worker_sg.id
-  source_security_group_id = aws_security_group.eks_cluster_management_sg.id
+  security_group_id = aws_security_group.eks_nodes.id
+  source_security_group_id = aws_security_group.eks_cluster.id
 }
-resource "aws_security_group" "eks_cluster_management_sg" {
+resource "aws_security_group" "eks_cluster" {
   name        = "amit-counter-eks_cluster_sg"   
   vpc_id      = aws_vpc.counter_vpc.id
 
@@ -171,8 +171,8 @@ resource "aws_security_group_rule" "eks_control_plane_ingress_443" {
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  security_group_id = aws_security_group.eks_cluster_management_sg.id
-  source_security_group_id = aws_security_group.counter_worker_sg.id
+  security_group_id = aws_security_group.eks_cluster.id
+  source_security_group_id = aws_security_group.eks_nodes.id
 }
 
 resource "aws_security_group_rule" "eks_control_plane_ingress_10250" {
@@ -180,6 +180,6 @@ resource "aws_security_group_rule" "eks_control_plane_ingress_10250" {
   from_port         = 10250
   to_port           = 10250
   protocol          = "tcp"
-  security_group_id = aws_security_group.eks_cluster_management_sg.id
-  source_security_group_id = aws_security_group.counter_worker_sg.id
+  security_group_id = aws_security_group.eks_cluster.id
+  source_security_group_id = aws_security_group.eks_nodes.id
 }
