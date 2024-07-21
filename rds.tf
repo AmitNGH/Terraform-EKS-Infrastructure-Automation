@@ -22,13 +22,6 @@ resource "aws_security_group" "counter_rds" {
     cidr_blocks = ["10.0.0.0/24"] # Adjust according to your VPC CIDR
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = {
     Name = "rds-security-group"
   }
