@@ -143,12 +143,6 @@ variable "scaling_max_size" {
     description = "Scaling maximum size"
 }
 
-variable "scaling_max_size" {
-    type = number
-    default = 5
-    description = "Scaling maximum size"
-}
-
 # Instance type
 variable "ec2_instance_type" {
     type = string

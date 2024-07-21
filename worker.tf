@@ -49,5 +49,5 @@ resource "aws_eks_node_group" "eks_node_group" {
 
   instance_types = [var.ec2_instance_type]
 
-  depends_on = [aws_iam_role_policy_attachment.eks_node_role]
+  depends_on = [aws_iam_role.eks_node_role]
 }
