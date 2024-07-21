@@ -1,38 +1,42 @@
 # Create RDS for persistent storage
-resource "aws_db_instance" "counter_mysql" {
-  allocated_storage    = 20
-  engine               = "mysql"
-  engine_version       = "8.0"
-  instance_class       = "db.t3.micro"
-  db_name              = "counterdb"
-  username             = "amit"
-  password             = "password"
+resource "aws_db_instance" "mysql" {
+  allocated_storage    = var.db_allocated_storage
+  engine               = var.db_engine
+  engine_version       = var.db_version
+  instance_class       = var.db_instance_type
+  db_name              = var.db_name
+  username             = var.db_username
+  password             = var.db_password
   skip_final_snapshot  = true
-  vpc_security_group_ids = [aws_security_group.counter_rds.id]
+  vpc_security_group_ids = [aws_security_group.rds.id]
   db_subnet_group_name   = aws_db_subnet_group.private_subnets.name
+
+  tags = {
+    Name = var.db_name_tag
+  }
 }
 
-resource "aws_security_group" "counter_rds" {
-  vpc_id = aws_vpc.counter_vpc.id
+resource "aws_security_group" "rds" {
+  name = var.db_security_group_name
+  vpc_id = aws_vpc.vpc.id
 
   ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/24"] # Adjust according to your VPC CIDR
+    cidr_blocks = [var.vpc_cidr_block]
   }
 
   tags = {
-    Name = "rds-security-group"
+    Name = var.db_security_group_name
   }
 }
 
 resource "aws_db_subnet_group" "private_subnets" {
-  name       = "amit-counter-db-subnet-group"
-
+  name       = var.db_subnet_group_name
   subnet_ids = [for sn in aws_subnet.private_subnet : sn.id]
 
   tags = {
-    Name = "amit-counter-db-subnet-group"
+    Name = var.db_subnet_group_name
   }
 }
