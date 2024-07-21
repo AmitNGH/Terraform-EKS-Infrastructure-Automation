@@ -81,9 +81,7 @@ variable "routing_table_name" {
 
 
 
-
-
-# 
+## EKS
 variable "eks_cluster_name" {
   type = string
     default = "amit-counter-eks-cluster"

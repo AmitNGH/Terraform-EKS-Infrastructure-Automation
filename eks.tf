@@ -29,7 +29,7 @@ resource "aws_iam_role_policy_attachment" "eks_service_policy" {
 
 # Create EKS Cluster
 resource "aws_eks_cluster" "eks_cluster" {
-  name     = var.eks_cluster_name                                        # variable?
+  name     = var.eks_cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
 
   vpc_config {
@@ -45,36 +45,66 @@ resource "aws_eks_cluster" "eks_cluster" {
   tags = {
     Name = var.eks_cluster_name
   }
-
-  depends_on = [aws_iam_role_policy_attachment.eks_cluster_policy, aws_vpc.counter_vpc]
 }
 
-# resource "aws_security_group" "eks_cluster_sg" {
-#   name        = "amit-counter-eks-cluster-sg"   
-#   description = "Cluster communication with worker nodes"
-#   vpc_id      = aws_vpc.counter_vpc.id
+resource "aws_security_group" "counter_worker_sg" {
+  name   = "k8s-counter-sg"
+  vpc_id = aws_vpc.counter_vpc.id
 
-#   tags = {
-#     Name = "amit-counter-eks-cluster-sg" 
-#   }
-# }
+  tags = {
+    Name = "k8s-data-plane-sg"
+  }
+}
 
-# resource "aws_security_group_rule" "cluster_inbound" {
-#   description              = "Allow worker nodes to communicate with the cluster API Server"
-#   from_port                = 443
-#   protocol                 = "tcp"
-#   security_group_id        = aws_security_group.eks_cluster.id
-#   source_security_group_id = aws_security_group.eks_nodes.id
-#   to_port                  = 443
-#   type                     = "ingress"
-# }
+resource "aws_security_group_rule" "counter_sg_worker_80" {
+  security_group_id = aws_security_group.counter_worker_sg.id
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks = [var.vpc_cidr_block]
+}
 
-# resource "aws_security_group_rule" "cluster_outbound" {
-#   description              = "Allow cluster API Server to communicate with the worker nodes"
-#   from_port                = 1024
-#   protocol                 = "tcp"
-#   security_group_id        = aws_security_group.eks_cluster.id
-#   source_security_group_id = aws_security_group.eks_nodes.id
-#   to_port                  = 65535
-#   type                     = "egress"
-# }
+resource "aws_security_group_rule" "eks_worker_ingress_443" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.counter_worker_sg.id
+  source_security_group_id = aws_security_group.eks_cluster_management_sg.id
+}
+
+resource "aws_security_group_rule" "eks_worker_ingress_10250" {
+  type              = "ingress"
+  from_port         = 10250
+  to_port           = 10250
+  protocol          = "tcp"
+  security_group_id = aws_security_group.counter_worker_sg.id
+  source_security_group_id = aws_security_group.eks_cluster_management_sg.id
+}
+resource "aws_security_group" "eks_cluster_management_sg" {
+  name        = "amit-counter-eks_cluster_sg"   
+  vpc_id      = aws_vpc.counter_vpc.id
+
+  tags = {
+    Name = "amit-counter-eks-nodes-sg" 
+  }
+}
+
+resource "aws_security_group_rule" "eks_control_plane_ingress_443" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.eks_cluster_management_sg.id
+  source_security_group_id = aws_security_group.counter_worker_sg.id
+}
+
+resource "aws_security_group_rule" "eks_control_plane_ingress_10250" {
+  type              = "ingress"
+  from_port         = 10250
+  to_port           = 10250
+  protocol          = "tcp"
+  security_group_id = aws_security_group.eks_cluster_management_sg.id
+  source_security_group_id = aws_security_group.counter_worker_sg.id
+}
