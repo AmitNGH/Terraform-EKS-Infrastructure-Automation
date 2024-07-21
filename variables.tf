@@ -28,7 +28,7 @@ variable "private_subnet_cidr" {
 variable "private_subnet_name" {
     type = string
     default = "amit-counter-private-subnet"
-    description = "Private subnet tag name"
+    description = "Private subnet name"
 }
 
 # Public subnets
@@ -41,7 +41,7 @@ variable "public_subnet_cidr" {
 variable "public_subnet_name" {
     type = string
     default = "amit-counter-public-subnet"
-    description = "Public subnet tag name"
+    description = "Public subnet name"
 }
 
 variable "subnet_azs" {
@@ -54,28 +54,42 @@ variable "subnet_azs" {
 variable "internet_gateway_name" {
     type = string
     default = "amit-counter-internet-gateway"
-    description = "Internet Gateway tag name"
+    description = "Internet Gateway name"
 }
 
 # Elastic IP
 variable "elastic_ip_name" {
     type = string
     default = "amit-counter-elastic-ip"
-    description = "Elastic IP tag name"
+    description = "Elastic IP name"
 }
 
 # NAT Gateway
 variable "nat_gateway_name" {
     type = string
     default = "amit-counter-nat-gateway"
-    description = "NAT Gateway tag name"
+    description = "NAT Gateway name"
 }
 
 # Route Table
 variable "routing_table_name" {
   type = string
     default = "amit-counter-route-table"
-    description = "Route Table tag name"
+    description = "Route Table name"
+}
+
+# Nodes Security
+variable "eks_nodes_sg_name" {
+  type = string
+    default = "counter-eks-nodes-sg"
+    description = "EKS nodes security group name"
+}
+
+# Cluster Security
+variable "eks_cluster_sg_name" {
+  type = string
+    default = "counter-eks-cluster-sg"
+    description = "EKS cluster security group name"
 }
 
 
