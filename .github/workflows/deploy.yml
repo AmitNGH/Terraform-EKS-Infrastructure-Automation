@@ -1,8 +1,9 @@
 name: Deploy Infrastructure
 
 on:
-  push:
-    branches: [ "master" ]
+  workflow_dispatch:
+  # push:
+    # branches: [ "master" ]
     
 jobs:
   terraform:
@@ -36,8 +37,14 @@ jobs:
       env:
         TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
 
-    - name: Apply Terraform
-      # if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve
-      env:
-        TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
+    # - name: Apply Terraform
+    #   # if: github.ref == 'refs/heads/main'
+    #   run: terraform apply -auto-approve
+    #   env:
+    #     TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
+
+    - name: Upload Terraform state file
+      uses: actions/upload-artifact@v2
+      with:
+        name: terraform-state
+        path: tfstate/terraform.tfstate
