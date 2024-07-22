@@ -42,9 +42,10 @@ jobs:
     #   run: terraform apply -auto-approve
     #   env:
     #     TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
-
-    - name: Upload Terraform state file
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-state
-        path: infra/terraform.tfstate
+    - name: List directory contents
+      run: ls
+    # - name: Upload Terraform state file
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: terraform-state
+    #     path: infra/terraform.tfstate
