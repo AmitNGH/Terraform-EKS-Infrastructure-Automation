@@ -29,6 +29,12 @@ jobs:
     - name: Initialize Terraform
       run: terraform init
 
+    - name: Download Terraform state file
+      uses: actions/download-artifact@v2
+      with:
+        name: terraform-state
+        path: terraform.tfstate
+    
     - name: Validate Terraform
       run: terraform validate
 
