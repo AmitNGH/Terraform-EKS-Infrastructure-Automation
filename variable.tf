@@ -154,7 +154,7 @@ variable "ec2_instance_type" {
 variable "db_identifier" {
     type = string
     default = "counter-service-db"
-    description = "Database allocated storage"
+    description = "Database identifier"
 }
 
 variable "db_allocated_storage" {
