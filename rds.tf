@@ -1,5 +1,6 @@
 # Create RDS for persistent storage
 resource "aws_db_instance" "mysql" {
+  identifier           = var.db_identifier
   allocated_storage    = var.db_allocated_storage
   engine               = var.db_engine
   engine_version       = var.db_version
@@ -12,7 +13,7 @@ resource "aws_db_instance" "mysql" {
   db_subnet_group_name   = aws_db_subnet_group.private_subnets.name
 
   tags = {
-    Name = var.db_name_tag
+    Name = var.db_identifier
   }
 }
 

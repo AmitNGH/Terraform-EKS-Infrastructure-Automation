@@ -151,6 +151,12 @@ variable "ec2_instance_type" {
 }
 
 ## RDS
+variable "db_identifier" {
+    type = string
+    default = "counter-service-db"
+    description = "Database allocated storage"
+}
+
 variable "db_allocated_storage" {
     type = number
     default = 20
@@ -190,12 +196,6 @@ variable "db_username" {
 variable "db_password" {
     type = string
     description = "Database password"
-}
-
-variable "db_name_tag" {
-      type = string
-      default = "counter-mysql"
-      description = "DB Name tag"
 }
 
 variable "db_security_group_name" {
