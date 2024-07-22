@@ -39,3 +39,5 @@ jobs:
     - name: Apply Terraform
       # if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve
+      env:
+        TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
