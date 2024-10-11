@@ -8,7 +8,7 @@ variable "region" {
 ## VPC
 variable "vpc_name" {
     type = string
-    default = "amit-counter-vpc"
+    default = "eks-cluster-vpc"
     description = "Name of the VPC"
 }
 
@@ -27,7 +27,7 @@ variable "private_subnet_cidr" {
 
 variable "private_subnet_name" {
     type = string
-    default = "amit-counter-private-subnet"
+    default = "eks-cluster-private-subnet"
     description = "Private subnet name"
 }
 
@@ -40,7 +40,7 @@ variable "public_subnet_cidr" {
 
 variable "public_subnet_name" {
     type = string
-    default = "amit-counter-public-subnet"
+    default = "eks-cluster-public-subnet"
     description = "Public subnet name"
 }
 
@@ -53,55 +53,55 @@ variable "subnet_azs" {
 # Internet Gateway
 variable "internet_gateway_name" {
     type = string
-    default = "amit-counter-internet-gateway"
+    default = "eks-cluster-internet-gateway"
     description = "Internet Gateway name"
 }
 
 # Elastic IP
 variable "elastic_ip_name" {
     type = string
-    default = "amit-counter-elastic-ip"
+    default = "eks-cluster-elastic-ip"
     description = "Elastic IP name"
 }
 
 # NAT Gateway
 variable "nat_gateway_name" {
     type = string
-    default = "amit-counter-nat-gateway"
+    default = "eks-cluster-nat-gateway"
     description = "NAT Gateway name"
 }
 
 # Route Table
 variable "routing_table_name" {
     type = string
-    default = "amit-counter-route-table"
+    default = "eks-cluster-route-table"
     description = "Route Table name"
 }
 
 # Nodes Security
 variable "eks_nodes_sg_name" {
     type = string
-    default = "counter-eks-nodes-sg"
+    default = "eks-nodes-sg"
     description = "EKS nodes security group name"
 }
 
 # Cluster Security
 variable "eks_cluster_sg_name" {
     type = string
-    default = "counter-eks-cluster-sg"
+    default = "eks-cluster-sg"
     description = "EKS cluster security group name"
 }
 
 ## EKS
 variable "eks_cluster_name" {
     type = string
-    default = "counter-eks-cluster"
+    default = "eks-cluster"
     description = "EKS Cluster name"
 }
 
 variable "eks_cluster_role_name" {
     type = string
-    default = "counter-eks-cluster-role"
+    default = "eks-cluster-role"
     description = "EKS Cluster role name"
 }
 
@@ -114,13 +114,13 @@ variable "kubernetes_version" {
 ## Worker
 variable "eks_node_name" {
     type = string
-    default = "counter-eks-node-group"
+    default = "eks-node-group"
     description = "EKS worker name"
 }
 
 variable "eks_node_role_name" {
     type = string
-    default = "counter-eks-node-role"
+    default = "eks-node-role"
     description = "EKS worker role name"
 }
 
@@ -134,13 +134,13 @@ variable "scaling_desired_size" {
 variable "scaling_min_size" {
     type = number
     default = 1
-    description = "Scaling minimun size"
+    description = "Scaling Minimun size"
 }
 
 variable "scaling_max_size" {
     type = number
     default = 5
-    description = "Scaling maximum size"
+    description = "Scaling Maximum size"
 }
 
 # Instance type
@@ -153,7 +153,6 @@ variable "ec2_instance_type" {
 ## RDS
 variable "db_identifier" {
     type = string
-    default = "counter-service-db"
     description = "Database identifier"
 }
 
@@ -183,13 +182,12 @@ variable "db_instance_type" {
 
 variable "db_name" {
     type = string
-    default = "counterdb"
+    default = "eks-cluster-db"
     description = "Database name"
 }
 
 variable "db_username" {
     type = string
-    default = "amit"
     description = "Database username"
 }
 
@@ -200,12 +198,12 @@ variable "db_password" {
 
 variable "db_security_group_name" {
       type = string
-      default = "counter-mysql-sg"
+      default = "mysql-sg"
       description = "DB security group name"
 }
 
 variable "db_subnet_group_name" {
       type = string
-      default = "counter-db-subnet-group"
+      default = "eks-cluster-db-subnet-group"
       description = "DB subnet group name"
 }
